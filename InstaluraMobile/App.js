@@ -15,7 +15,8 @@ import {
   Text,
   StatusBar,
   Image,
-  Dimensions
+  Dimensions,
+  FlatList
 } from 'react-native';
 
 const width = Dimensions.get('screen').width;
@@ -31,12 +32,16 @@ const App = () => {
     <Fragment>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView>
-        {fotos.map(foto =>
-          <View key={foto.id}>
-            <Text>{foto.usuario}</Text>
-            <Image source={require('./resources/img/alura.png')} style={{ width: width, height: width }} />
-          </View>
-        )}
+        <FlatList style={{ marginTop: 20 }}
+          data={fotos}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) =>
+            <View>
+              <Text>{item.usuario}</Text>
+              <Image source={require('./resources/img/alura.png')} style={{ width: width, height: width }} />
+            </View>
+          }
+        />
       </SafeAreaView>
     </Fragment>
   );
