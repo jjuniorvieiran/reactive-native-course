@@ -10,16 +10,12 @@ import React, { Fragment } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
-  View,
-  Text,
   StatusBar,
-  Image,
   Dimensions,
   FlatList
 } from 'react-native';
 
-const width = Dimensions.get('screen').width;
+import Post from './src/components/Post';
 
 const App = () => {
   const fotos = [
@@ -36,14 +32,7 @@ const App = () => {
           data={fotos}
           keyExtractor={item => item.id}
           renderItem={({ item }) =>
-            <View>
-              <View style={{ margin: 10, flexDirection: 'row', alignItems: 'center' }}>
-                <Image source={require('./resources/img/alura.png')}
-                  style={styles.fotoDePerfil} />
-                <Text>{item.usuario}</Text>
-              </View>
-              <Image source={require('./resources/img/alura.png')} style={styles.foto} />
-            </View>
+            <Post foto={item} />
           }
         />
       </SafeAreaView>
@@ -51,24 +40,9 @@ const App = () => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     marginTop: 20
-  },
-  cabecalho: {
-    margin: 10,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  fotoDePerfil: {
-    marginRight: 10,
-    borderRadius: 20,
-    width: 40, height: 40
-  },
-  foto: {
-    width: width,
-    height: width
   }
 })
 
