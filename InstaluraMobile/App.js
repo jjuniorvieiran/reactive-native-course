@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,27 +17,37 @@ import {
 
 import Post from './src/components/Post';
 
-const App = () => {
-  const fotos = [
-    { id: 1, usuario: 'rafael' },
-    { id: 2, usuario: 'alberto' },
-    { id: 3, usuario: 'vitor' }
-  ];
+class InstaluraMobile extends Component {
 
-  return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <FlatList style={styles.container}
-          data={fotos}
-          keyExtractor={item => item.id}
-          renderItem={({ item }) =>
-            <Post foto={item} />
-          }
-        />
-      </SafeAreaView>
-    </Fragment>
-  );
+  constructor() {
+    super();
+    this.state = {
+      fotos: []
+    }
+  }
+
+  componentDidMount() {
+    fetch('https://instalura-api.herokuapp.com/api/public/fotos/rafael')
+      .then(resposta => resposta.json())
+      .then(json => this.setState({ fotos: json }));
+  }
+
+  render() {
+    return (
+      <Fragment>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <FlatList style={styles.container}
+            data={this.state.fotos}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) =>
+              <Post foto={item} />
+            }
+          />
+        </SafeAreaView>
+      </Fragment>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -46,4 +56,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default App;
+export default InstaluraMobile;
