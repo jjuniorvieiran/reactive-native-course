@@ -14,7 +14,9 @@ export default class Post extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { foto: this.props.foto }
+        this.state = {
+            foto: { ...this.props.foto, likers: [{}] }
+        }
     }
 
     carregaIcone(likeada) {
@@ -27,6 +29,25 @@ export default class Post extends Component {
             likeada: !this.state.foto.likeada
         }
         this.setState({ foto: fotoAtualizada });
+    }
+
+    exibeLegenda(foto) {
+        if (foto.comentario == '')
+            return;
+
+        return (
+            <View style={styles.comentario}>
+                <Text style={styles.tituloComentario}>{foto.loginUsuario}</Text>
+                <Text>{foto.comentario}</Text>
+            </View>
+        );
+    }
+
+    exibeLikes(likers) {
+        if (likers.length <= 0)
+            return;
+
+        return <Text style={styles.likes}>{likers.length} {likers.length > 1 ? 'curtidas' : 'curtida'}</Text>
     }
 
     render() {
@@ -43,6 +64,9 @@ export default class Post extends Component {
                     <TouchableOpacity onPress={this.like.bind(this)}>
                         <Image style={styles.botaoDeLike} source={this.carregaIcone(foto.likeada)} />
                     </TouchableOpacity>
+
+                    {this.exibeLikes(foto.likers)}
+                    {this.exibeLegenda(foto)}
                 </View>
             </View>
         );
@@ -51,24 +75,36 @@ export default class Post extends Component {
 
 const styles = StyleSheet.create({
     cabecalho: {
-        margin: 10,
-        flexDirection: 'row',
-        alignItems: 'center'
+      margin:10,
+      flexDirection: 'row',
+      alignItems: 'center'
     },
     fotoDePerfil: {
-        margin: 10,
-        borderRadius: 20,
-        width: 40, height: 40
+      margin: 10,
+      borderRadius: 20,
+      width:40, 
+      height:40
     },
     foto: {
-        width: width,
-        height: width
+      width:width,
+      height:width
     },
     botaoDeLike: {
-        width: 40,
-        height: 40
+      marginBottom: 10,
+      width: 40,
+      height: 40
     },
     rodape: {
-        margin: 10
+      margin: 10
+    },
+    likes: {
+        fontWeight: 'bold'
+    },
+    comentario: {
+      flexDirection: 'row'
+    },
+    tituloComentario: {
+      fontWeight: 'bold',
+      marginRight: 5
     }
-})
+  })
