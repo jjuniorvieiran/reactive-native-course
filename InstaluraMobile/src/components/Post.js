@@ -14,9 +14,7 @@ export default class Post extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            foto: { ...this.props.foto, likers: [{}] }
-        }
+        this.state = { foto: {...this.props.foto, likers: [{}, {}]} }
     }
 
     carregaIcone(likeada) {
@@ -24,10 +22,25 @@ export default class Post extends Component {
     }
 
     like() {
-        const fotoAtualizada = {
-            ...this.state.foto,
-            likeada: !this.state.foto.likeada
+        const { foto } = this.state;
+        let novaLista = [];
+
+        if (!foto.likeada) {
+            novaLista = [
+                ...foto.likers,
+                { login: 'meuUsuario' }
+            ];
+        } else {
+            novaLista = foto.likers.filter(liker => {
+                return liker.login !== 'meuUsuario';
+            })
         }
+        const fotoAtualizada = {
+            ...foto,
+            likeada: !foto.likeada,
+            likers: novaLista
+        }
+
         this.setState({ foto: fotoAtualizada });
     }
 
@@ -75,36 +88,36 @@ export default class Post extends Component {
 
 const styles = StyleSheet.create({
     cabecalho: {
-      margin:10,
-      flexDirection: 'row',
-      alignItems: 'center'
+        margin: 10,
+        flexDirection: 'row',
+        alignItems: 'center'
     },
     fotoDePerfil: {
-      margin: 10,
-      borderRadius: 20,
-      width:40, 
-      height:40
+        margin: 10,
+        borderRadius: 20,
+        width: 40,
+        height: 40
     },
     foto: {
-      width:width,
-      height:width
+        width: width,
+        height: width
     },
     botaoDeLike: {
-      marginBottom: 10,
-      width: 40,
-      height: 40
+        marginBottom: 10,
+        width: 40,
+        height: 40
     },
     rodape: {
-      margin: 10
+        margin: 10
     },
     likes: {
         fontWeight: 'bold'
     },
     comentario: {
-      flexDirection: 'row'
+        flexDirection: 'row'
     },
     tituloComentario: {
-      fontWeight: 'bold',
-      marginRight: 5
+        fontWeight: 'bold',
+        marginRight: 5
     }
-  })
+})
