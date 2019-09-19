@@ -14,7 +14,7 @@ export default class Post extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { foto: {...this.props.foto, likers: [{}, {}]} }
+        this.state = { foto: { ...this.props.foto, likers: [{}, {}] } }
     }
 
     carregaIcone(likeada) {
@@ -80,6 +80,13 @@ export default class Post extends Component {
 
                     {this.exibeLikes(foto.likers)}
                     {this.exibeLegenda(foto)}
+
+                    {foto.comentarios.map(comentario =>
+                        <View style={styles.comentario} key={comentario.id}>
+                            <Text style={styles.tituloComentario}>{comentario.login}</Text>
+                            <Text>{comentario.texto}</Text>
+                        </View>
+                    )}
                 </View>
             </View>
         );
