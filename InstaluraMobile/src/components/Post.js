@@ -15,7 +15,10 @@ export default class Post extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { foto: { ...this.props.foto, likers: [{}, {}] } }
+        this.state = {
+            foto: this.props.foto,
+            valorComentario: ''
+        }
     }
 
     carregaIcone(likeada) {
@@ -64,6 +67,28 @@ export default class Post extends Component {
         return <Text style={styles.likes}>{likers.length} {likers.length > 1 ? 'curtidas' : 'curtida'}</Text>
     }
 
+    adicionaComentario() {
+        if (this.state.valorComentario === '')
+            return;
+
+        const novaLista = [
+            ...this.state.foto.comentarios,
+            {
+                id: this.state.valorComentario,
+                login: 'meuUsuario',
+                texto: this.state.valorComentario
+            }
+        ];
+
+        const fotoAtualizada = {
+            ...this.state.foto,
+            comentarios: novaLista
+        }
+
+        this.setState({ foto: fotoAtualizada, valorComentario: '' });
+        this.inputComentario.clear();
+    }
+
     render() {
         const { foto } = this.state;
         return (
@@ -90,8 +115,13 @@ export default class Post extends Component {
                     )}
 
                     <View style={styles.novoComentario}>
-                        <TextInput style={styles.input} placeholder="Adicione um comentário..." />
-                        <Image style={styles.icone} source={require('../../resources/img/send.png')} />
+                        <TextInput style={styles.input} placeholder="Adicione um comentário..."
+                            ref={input => this.inputComentario = input}
+                            onChangeText={texto => this.setState({ valorComentario: texto })} />
+
+                        <TouchableOpacity onPress={this.adicionaComentario.bind(this)}>
+                            <Image style={styles.icone} source={require('../../resources/img/send.png')} />
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
